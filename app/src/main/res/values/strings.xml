@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Movies App</string>
+
+    <string name="tmdb_api_key">5dad61f29c7f330a81c8932caad6c3bd</string>
+    <string name="default_language">en-US</string>
+    <string name="default_region">US</string>
+
+</resources>
