@@ -34,6 +34,7 @@ class MoviesRecyclerViewAdapter(val moviesList: List<Movie>, util : Util) :  Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movieTitle.text = moviesList[position].title
         holder.moviePopularity.text = moviesList[position].popularity.toInt().toString()
+
         holder.movieGenre.text = util.getPrettyDisplayList(moviesList[position].genre_names)
 
         // Load image from Picasso

@@ -1,21 +1,13 @@
 package com.sathvik1709.tmdbsamsungtest.repo
 
 import com.sathvik1709.tmdbsamsungtest.dto.Genre
-import com.sathvik1709.tmdbsamsungtest.dto.GenreResponse
 import com.sathvik1709.tmdbsamsungtest.dto.Movie
 import com.sathvik1709.tmdbsamsungtest.dto.MoviesListResponse
 import com.sathvik1709.tmdbsamsungtest.network.TMDBApiService
-import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.Single
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
-import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Function
 
 
 class CloudRepository constructor(tmdbApiService: TMDBApiService) {
@@ -53,18 +45,25 @@ class CloudRepository constructor(tmdbApiService: TMDBApiService) {
         Single.zip(moviesResponseSingle, genreResponseSingle, object : BiFunction<List<Movie>, HashMap<Int, String>, List<Movie>> {
             override fun apply(moviesList: List<Movie>, genreMap: HashMap<Int, String>): List<Movie> {
 
-                moviesList.forEach { movie: Movie ->
-                    run {
-                        var genreNames: MutableList<String> = ArrayList()
-                        movie.genre_ids.forEach { id: Int -> genreNames.add(genreMap[id]!!) }
-                        movie.genre_names = genreNames
-                    }
+                for (i in moviesList.indices) {
+                    var movie = moviesList[i]
+                    var genreNames: MutableList<String> = ArrayList()
+                    movie.genre_ids.forEach { id: Int -> genreNames.add(genreMap[id]!!) }
+                    movie.genre_names = genreNames
                 }
+
+//                moviesList.forEach { movie: Movie ->
+//                    run {
+//                        var genreNames: MutableList<String> = ArrayList()
+//                        movie.genre_ids.forEach { id: Int -> genreNames.add(genreMap[id]!!) }
+//                        movie.genre_names = genreNames
+//                    }
+//                }
                 return moviesList
             }
         }).subscribe(
                 { t -> serviceResponse.onSuccess(t) },
-                { t -> serviceResponse.onErrorMsg(t.localizedMessage) }
+                { t -> serviceResponse.onErrorMsg(t.message!!) }
         )
     }
 }

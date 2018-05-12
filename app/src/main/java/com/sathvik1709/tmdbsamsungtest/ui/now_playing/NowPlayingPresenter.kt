@@ -22,7 +22,7 @@ class NowPlayingPresenter @Inject constructor(view: MoviesListContract.View) : M
             }
 
             override fun onErrorMsg(errorMessage: String) {
-                view.showErrorMessage()
+                view.showErrorMessage(errorMessage)
                 view.hideProgressIndicator()
             }
         }, path)

@@ -22,7 +22,7 @@ class UpcomingMoviesPresenter @Inject constructor(view: MoviesListContract.View)
             }
 
             override fun onErrorMsg(errorMessage: String) {
-                view.showErrorMessage()
+                view.showErrorMessage(errorMessage)
                 view.hideProgressIndicator()
             }
         }, path)

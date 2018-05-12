@@ -1,12 +1,10 @@
 package com.sathvik1709.tmdbsamsungtest.di
 
-import com.sathvik1709.tmdbsamsungtest.extensions.Util
 import com.sathvik1709.tmdbsamsungtest.ui.now_playing.NowPlayingModule
 import com.sathvik1709.tmdbsamsungtest.ui.now_playing.NowPlayingView
 import com.sathvik1709.tmdbsamsungtest.ui.upcoming.UpcomingMoviesModule
 import com.sathvik1709.tmdbsamsungtest.ui.upcoming.UpcomingMoviesView
 import dagger.Module
-import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 
 @Module

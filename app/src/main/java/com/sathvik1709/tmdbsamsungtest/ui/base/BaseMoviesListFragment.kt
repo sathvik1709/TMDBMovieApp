@@ -2,10 +2,11 @@ package com.sathvik1709.tmdbsamsungtest.ui.base
 
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -19,12 +20,13 @@ import com.sathvik1709.tmdbsamsungtest.dto.Movie
 import com.sathvik1709.tmdbsamsungtest.extensions.Util
 import com.sathvik1709.tmdbsamsungtest.ui.MoviesListContract
 import com.sathvik1709.tmdbsamsungtest.ui.activities.MovieDetailActivity
-import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
-import kotlinx.android.synthetic.main.fragment_movies_list.*
 import javax.inject.Inject
+import android.R.string.ok
+import android.R.string.ok
+import java.util.ArrayList
+
 
 abstract class BaseMoviesListFragment : Fragment() {
 
@@ -44,10 +46,12 @@ abstract class BaseMoviesListFragment : Fragment() {
         moviesListRecyclerView = view.findViewById(R.id.movies_recycler_view)
         progressBar = view.findViewById(R.id.movies_fragment_progress_bar)
 
-        getPresenter().getMoviesList(getRequestPath())
+        callMovieList()
 
         return view
     }
+
+    fun callMovieList() = getPresenter().getMoviesList(getRequestPath())
 
     override fun onAttach(context: Context?) {
         AndroidSupportInjection.inject(this)
@@ -61,7 +65,13 @@ abstract class BaseMoviesListFragment : Fragment() {
             movie ->
             run {
                 val intent = Intent(activity, MovieDetailActivity::class.java).apply {
-                    putExtra("SELECTED_MOVIE", movie)
+                    // This can be improved using parcelable
+                    putExtra("RELEASE_DATE", movie.release_date)
+                    putExtra("VOTES", movie.vote_count)
+                    putStringArrayListExtra("GENRES", movie.genre_names as ArrayList<String>?)
+                    putExtra("OVERVIEW", movie.overview)
+                    putExtra("MOVIE_TITLE", movie.title)
+                    putExtra("POSTER", movie.poster_path)
                 }
                 startActivity(intent)
             }
@@ -89,6 +99,20 @@ abstract class BaseMoviesListFragment : Fragment() {
 
     fun hideProgressBar(){
         progressBar.visibility = View.GONE
+    }
+
+    fun showErrorDialog(errorMsg : String){
+        val builder = AlertDialog.Builder(activity!!)
+        builder.setMessage(errorMsg)
+                .setTitle("Error")
+        builder.setPositiveButton("Retry", DialogInterface.OnClickListener { dialog, id ->
+            callMovieList()
+        })
+        builder.setNegativeButton("Close", DialogInterface.OnClickListener { dialog, id ->
+            dialog.dismiss()
+        })
+        val dialog = builder.create()
+        dialog.show()
     }
 
 

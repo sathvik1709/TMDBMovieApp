@@ -2,7 +2,6 @@ package com.sathvik1709.tmdbsamsungtest
 
 import android.app.Activity
 import android.app.Application
-import com.sathvik1709.tmdbsamsungtest.di.AppComponent
 import com.sathvik1709.tmdbsamsungtest.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

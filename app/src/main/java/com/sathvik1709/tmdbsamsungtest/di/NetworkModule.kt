@@ -11,8 +11,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 import okhttp3.logging.HttpLoggingInterceptor
 
-
-
 @Module
 class NetworkModule {
 

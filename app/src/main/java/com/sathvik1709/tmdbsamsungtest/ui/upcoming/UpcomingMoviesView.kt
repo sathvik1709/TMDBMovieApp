@@ -22,8 +22,8 @@ class UpcomingMoviesView : BaseMoviesListFragment(), MoviesListContract.View {
         setUpRecyclerView(list)
     }
 
-    override fun showErrorMessage() {
-
+    override fun showErrorMessage(errorMessage: String) {
+        showErrorDialog(errorMessage)
     }
 
     override fun showProgressIndicator() {
