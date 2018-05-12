@@ -1,6 +1,5 @@
 package com.sathvik1709.tmdbsamsungtest.ui.now_playing
 
-import android.util.Log
 import com.sathvik1709.tmdbsamsungtest.dto.Movie
 import com.sathvik1709.tmdbsamsungtest.repo.CloudRepository
 import com.sathvik1709.tmdbsamsungtest.repo.ServiceResponse
@@ -15,14 +14,16 @@ class NowPlayingPresenter @Inject constructor(view: MoviesListContract.View) : M
     var view : MoviesListContract.View = view
 
     override fun getMoviesList(path : String) {
-
-        repository.getMoviesList(object : ServiceResponse<List<Movie>>{
+        view.showProgressIndicator()
+        repository.getMoviesList1(object : ServiceResponse<List<Movie>>{
             override fun onSuccess(moviesList : List<Movie>) {
                 view.showMoviesList(moviesList)
+                view.hideProgressIndicator()
             }
 
             override fun onErrorMsg(errorMessage: String) {
-
+                view.showErrorMessage()
+                view.hideProgressIndicator()
             }
         }, path)
     }

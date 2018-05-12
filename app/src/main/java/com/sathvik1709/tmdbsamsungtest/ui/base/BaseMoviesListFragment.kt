@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import com.sathvik1709.tmdbsamsungtest.R
 import com.sathvik1709.tmdbsamsungtest.adapter.MoviesRecyclerViewAdapter
 import com.sathvik1709.tmdbsamsungtest.dto.Movie
@@ -30,11 +31,13 @@ abstract class BaseMoviesListFragment : Fragment() {
 
     lateinit var moviesListRecyclerView: RecyclerView
     lateinit var disposable: Disposable
+    lateinit var progressBar: ProgressBar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_movies_list, container, false)
 
         moviesListRecyclerView = view.findViewById(R.id.movies_recycler_view)
+        progressBar = view.findViewById(R.id.movies_fragment_progress_bar)
 
         getPresenter().getMoviesList(getRequestPath())
 
@@ -53,7 +56,7 @@ abstract class BaseMoviesListFragment : Fragment() {
             movie ->
             run {
                 val intent = Intent(activity, MovieDetailActivity::class.java).apply {
-                    //putExtra("SELECTED_MOVIE", movie)
+                    putExtra("SELECTED_MOVIE", movie)
                 }
                 startActivity(intent)
             }
@@ -74,5 +77,14 @@ abstract class BaseMoviesListFragment : Fragment() {
             disposable.dispose()
         }
     }
+
+    fun showProgressBar(){
+        progressBar.visibility = View.VISIBLE
+    }
+
+    fun hideProgressBar(){
+        progressBar.visibility = View.GONE
+    }
+
 
 }

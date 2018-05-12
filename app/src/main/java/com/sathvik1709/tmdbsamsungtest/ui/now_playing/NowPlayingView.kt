@@ -23,4 +23,11 @@ class NowPlayingView : BaseMoviesListFragment(), MoviesListContract.View {
 
     }
 
+    override fun showProgressIndicator() {
+        showProgressBar()
+    }
+
+    override fun hideProgressIndicator() {
+        hideProgressBar()
+    }
 }

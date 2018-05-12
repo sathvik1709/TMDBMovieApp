@@ -26,4 +26,12 @@ class UpcomingMoviesView : BaseMoviesListFragment(), MoviesListContract.View {
 
     }
 
+    override fun showProgressIndicator() {
+
+    }
+
+    override fun hideProgressIndicator() {
+
+    }
+
 }

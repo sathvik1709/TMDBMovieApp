@@ -11,16 +11,19 @@ class UpcomingMoviesPresenter @Inject constructor(view: MoviesListContract.View)
     @Inject
     lateinit var repository: CloudRepository
 
-    var view : MoviesListContract.View = view
+    var view: MoviesListContract.View = view
 
     override fun getMoviesList(path: String) {
-        repository.getMoviesList(object : ServiceResponse<List<Movie>> {
-            override fun onSuccess(moviesList : List<Movie>) {
+        view.showProgressIndicator()
+        repository.getMoviesList1(object : ServiceResponse<List<Movie>> {
+            override fun onSuccess(moviesList: List<Movie>) {
                 view.showMoviesList(moviesList)
+                view.hideProgressIndicator()
             }
 
             override fun onErrorMsg(errorMessage: String) {
-
+                view.showErrorMessage()
+                view.hideProgressIndicator()
             }
         }, path)
     }

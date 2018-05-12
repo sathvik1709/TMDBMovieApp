@@ -7,6 +7,8 @@ interface MoviesListContract {
     interface View {
         fun showMoviesList(list : List<Movie>)
         fun showErrorMessage()
+        fun showProgressIndicator()
+        fun hideProgressIndicator()
     }
 
     interface Presenter {
