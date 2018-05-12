@@ -15,7 +15,7 @@ class NowPlayingPresenter @Inject constructor(view: MoviesListContract.View) : M
 
     override fun getMoviesList(path : String) {
         view.showProgressIndicator()
-        repository.getMoviesList1(object : ServiceResponse<List<Movie>>{
+        repository.getMoviesWithGenre(object : ServiceResponse<List<Movie>>{
             override fun onSuccess(moviesList : List<Movie>) {
                 view.showMoviesList(moviesList)
                 view.hideProgressIndicator()

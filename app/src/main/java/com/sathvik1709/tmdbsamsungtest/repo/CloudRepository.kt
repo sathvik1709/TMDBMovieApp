@@ -32,35 +32,13 @@ class CloudRepository constructor(tmdbApiService: TMDBApiService) {
         service = tmdbApiService
     }
 
-    fun getMoviesList(serviceResponse: ServiceResponse<List<Movie>>, path : String) {
-        service.getMoviesList(path, apiKey, language, region)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map { response: MoviesListResponse -> return@map response.results }
-                .subscribe(object : SingleObserver<List<Movie>>{
-                    override fun onSuccess(moviesList: List<Movie>) {
-                        serviceResponse.onSuccess(moviesList)
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-
-                    }
-
-                    override fun onError(e: Throwable) {
-                        serviceResponse.onErrorMsg(e.localizedMessage)
-                    }
-                })
-
-    }
-
-    fun getMoviesList1(serviceResponse: ServiceResponse<List<Movie>>, path : String) {
+    fun getMoviesWithGenre(serviceResponse: ServiceResponse<List<Movie>>, path : String) {
 
         var moviesResponseSingle = service
                 .getMoviesList(path, apiKey, language, region)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { response: MoviesListResponse -> return@map response.results }
-                //.onErrorReturn { t -> null }
 
         var genreResponseSingle = service
                 .getGenreIds(apiKey, language)
@@ -71,14 +49,9 @@ class CloudRepository constructor(tmdbApiService: TMDBApiService) {
                     t.genres.forEach { genre: Genre -> genreMap[genre.id] = genre.name }
                     genreMap
                 }
-                //.onErrorReturn { t -> null }
 
         Single.zip(moviesResponseSingle, genreResponseSingle, object : BiFunction<List<Movie>, HashMap<Int, String>, List<Movie>> {
             override fun apply(moviesList: List<Movie>, genreMap: HashMap<Int, String>): List<Movie> {
-
-//                if(moviesList == null || genreMap == null ){
-//                    serviceResponse.onErrorMsg("Something went wrong, please try again")
-//                }
 
                 moviesList.forEach { movie: Movie ->
                     run {

@@ -16,6 +16,7 @@ import android.widget.ProgressBar
 import com.sathvik1709.tmdbsamsungtest.R
 import com.sathvik1709.tmdbsamsungtest.adapter.MoviesRecyclerViewAdapter
 import com.sathvik1709.tmdbsamsungtest.dto.Movie
+import com.sathvik1709.tmdbsamsungtest.extensions.Util
 import com.sathvik1709.tmdbsamsungtest.ui.MoviesListContract
 import com.sathvik1709.tmdbsamsungtest.ui.activities.MovieDetailActivity
 import dagger.android.AndroidInjection
@@ -23,6 +24,7 @@ import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_movies_list.*
+import javax.inject.Inject
 
 abstract class BaseMoviesListFragment : Fragment() {
 
@@ -32,6 +34,9 @@ abstract class BaseMoviesListFragment : Fragment() {
     lateinit var moviesListRecyclerView: RecyclerView
     lateinit var disposable: Disposable
     lateinit var progressBar: ProgressBar
+
+    @Inject
+    lateinit var util: Util
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.fragment_movies_list, container, false)
@@ -50,7 +55,7 @@ abstract class BaseMoviesListFragment : Fragment() {
     }
 
     fun setUpRecyclerView(list: List<Movie>) {
-        var adapter: MoviesRecyclerViewAdapter = MoviesRecyclerViewAdapter(list)
+        var adapter: MoviesRecyclerViewAdapter = MoviesRecyclerViewAdapter(list, util)
 
         disposable = (adapter as MoviesRecyclerViewAdapter).onViewClicked.subscribe({
             movie ->
